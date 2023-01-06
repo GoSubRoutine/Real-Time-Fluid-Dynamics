@@ -61,7 +61,7 @@ function draw() {
   clear();
   background(0);
   
- 
+  document.title = 'FPS: ' + nf(frameRate(), 2, 1);
   
   dens_prev = dens.slice();
   u_prev = u.slice();
