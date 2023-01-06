@@ -267,7 +267,7 @@ function drawDensity() {
 
 
 function keyPressed() {
-  save("img_" + month() + '-' + day() + '_' + hour() + '-' + minute() + '-' + second() + ".jpg");
+  //save("img_" + month() + '-' + day() + '_' + hour() + '-' + minute() + '-' + second() + ".jpg");
 }
 
 function drawVelocity() {
