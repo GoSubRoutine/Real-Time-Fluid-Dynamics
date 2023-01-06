@@ -1,3 +1,3 @@
 - https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics
-- https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics/index.original.html
+- https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics/index.original
 - https://VrtXArt.GitHub.io/cover3
