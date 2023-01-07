@@ -7,7 +7,7 @@
  https://GitHub.com/VrtXArt/cover3
  https://VrtXArt.GitHub.io/cover3
  
- mod: @GoToLoop (2023/Jan/06) [v2.1.4]
+ mod: @GoToLoop (2023/Jan/06) [v2.1.5]
  https://GitHub.com/GoSubRoutine/Real-Time-Fluid-Dynamics
  https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics
 
@@ -51,18 +51,18 @@ const
 var img, song, squareColor, black, white, fg, rpos;
 
 function preload() {
-  img = loadImage('capapng.png');
+  img = loadImage `capapng.png`;
 }
 
 function setup() {
   createCanvas(1280, 600);
   pixelDensity(1);
 
-  describe('a square with gradually changing opacity on a gray background');
+  describe `Fluids gradually fade away like smoke`;
 
-  song = loadSound('Data.mp3');
+  song = loadSound `Data.mp3`;
 
-  squareColor = color('magenta');
+  squareColor = color `magenta`;
   fg = black = color(0);
   white = color(255);
 
@@ -130,7 +130,7 @@ function initSim() {
 /**
  Basic implementation of the polar form of the Box-Muller transform
 
- Returns an array containing two gaussian distributed random values
+ Returns an array containing two Gaussian distributed random values
  with mean 0 and a standard deviation of 1
 */
 function polarBoxMullerTransform(arr = new Float32Array(2)) {
