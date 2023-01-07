@@ -7,7 +7,7 @@
  https://GitHub.com/VrtXArt/cover3
  https://VrtXArt.GitHub.io/cover3
  
- mod: @GoToLoop (2023/Jan/06) [v2.1.3]
+ mod: @GoToLoop (2023/Jan/06) [v2.1.4]
  https://GitHub.com/GoSubRoutine/Real-Time-Fluid-Dynamics
  https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics
 
@@ -189,7 +189,7 @@ function set_bnd(opt, arr) {
 }
 
 function diffuse(opt, a, b, diff) {
-  const d = N * N * DT * diff, d4 = 4*d + 1;
+  const d = DT * N*N * diff, d4 = 4*d + 1;
 
   for (var k = 0; k < ITERS; ++k) {
     for (var j = 1; j <= N; ++j) {
