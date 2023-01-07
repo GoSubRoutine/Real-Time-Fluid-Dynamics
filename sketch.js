@@ -7,7 +7,7 @@
  https://GitHub.com/VrtXArt/cover3
  https://VrtXArt.GitHub.io/cover3
  
- mod: @GoToLoop (2023/Jan/06) [v2.1.1]
+ mod: @GoToLoop (2023/Jan/06) [v2.1.2]
  https://GitHub.com/GoSubRoutine/Real-Time-Fluid-Dynamics
  https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics
 
@@ -35,16 +35,16 @@ const
   NOISE_AMOUNT = .03,
 
   u = new Float32Array(NN),
-  u_prev = new Float32Array(NN),
+  u_prev = u.slice(),
 
   v = new Float32Array(NN),
-  v_prev = new Float32Array(NN),
+  v_prev = v.slice(),
 
   dens = new Float32Array(NN),
-  dens_prev = new Float32Array(NN),
+  dens_prev = dens.slice(),
 
   turb = new Float32Array(NNN),
-  next_turb = new Float32Array(NNN),
+  next_turb = turb.slice(),
 
   temp = new Float32Array(2);
 
@@ -118,13 +118,8 @@ function initSim() {
   dens.fill(0);
 
   for (var i = 0; i < NNN; i += 2) {
-    polarBoxMullerTransform(temp);
-    turb[i] = temp[0];
-    turb[i + 1] = temp[1];
-
-    polarBoxMullerTransform(temp);
-    next_turb[i] = temp[0];
-    next_turb[i + 1] = temp[1];
+    turb.set(polarBoxMullerTransform(temp), i);
+    next_turb.set(polarBoxMullerTransform(temp), i);
   }
 }
 
@@ -335,10 +330,7 @@ function refill(i, j = i + 1) {
   turb[i] = next_turb[i];
   turb[j] = next_turb[j];
 
-  polarBoxMullerTransform(temp);
-
-  next_turb[i] = temp[0];
-  next_turb[j] = temp[1];
+  next_turb.set(polarBoxMullerTransform(temp), i);
 }
 
 function dens_step() {
