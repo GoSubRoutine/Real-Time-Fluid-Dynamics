@@ -7,7 +7,7 @@
  https://GitHub.com/VrtXArt/cover3
  https://VrtXArt.GitHub.io/cover3
  
- mod: @GoToLoop (2023/Jan/06) [v2.1.6]
+ mod: @GoToLoop (2023/Jan/06) [v2.1.7]
  https://GitHub.com/GoSubRoutine/Real-Time-Fluid-Dynamics
  https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics
 
@@ -184,11 +184,25 @@ function add_velocity() {
 }
 
 function set_bnd(opt, arr) {
-  for (var i = 1; i <= N; ++i) {
-    arr[IX(i, 0)] = opt == 2? -arr[IX(i, 1)] : arr[IX(i, 1)];
-    arr[IX(0, i)] = opt == 1? -arr[IX(1, i)] : arr[IX(1, i)];
-    arr[IX(M, i)] = opt == 1? -arr[IX(N, i)] : arr[IX(N, i)];
-    arr[IX(i, M)] = opt == 2? -arr[IX(i, N)] : arr[IX(i, N)];
+  if (opt == 1)  for (var i = 1; i <= N; ++i) {
+    arr[IX(i, 0)] = arr[IX(i, 1)];
+    arr[IX(0, i)] = -arr[IX(1, i)];
+    arr[IX(M, i)] = -arr[IX(N, i)];
+    arr[IX(i, M)] = arr[IX(i, N)];
+  }
+
+  else if (opt == 2)  for (var i = 1; i <= N; ++i) {
+    arr[IX(i, 0)] = -arr[IX(i, 1)];
+    arr[IX(0, i)] = arr[IX(1, i)];
+    arr[IX(M, i)] = arr[IX(N, i)];
+    arr[IX(i, M)] = -arr[IX(i, N)];
+  }
+
+  else for (var i = 1; i <= N; ++i) {
+    arr[IX(i, 0)] = arr[IX(i, 1)];
+    arr[IX(0, i)] = arr[IX(1, i)];
+    arr[IX(M, i)] = arr[IX(N, i)];
+    arr[IX(i, M)] = arr[IX(i, N)];
   }
 
   arr[IX(0, 0)] = .5 * (arr[IX(1, 0)] + arr[IX(0, 1)]);
