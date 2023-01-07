@@ -7,7 +7,7 @@
  https://GitHub.com/VrtXArt/cover3
  https://VrtXArt.GitHub.io/cover3
  
- mod: @GoToLoop (2023/Jan/06) [v2.1.2]
+ mod: @GoToLoop (2023/Jan/06) [v2.1.3]
  https://GitHub.com/GoSubRoutine/Real-Time-Fluid-Dynamics
  https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics
 
@@ -48,7 +48,7 @@ const
 
   temp = new Float32Array(2);
 
-var img, song, squareColor, black, white, fg, rpos = 0;
+var img, song, squareColor, black, white, fg, rpos;
 
 function preload() {
   img = loadImage('capapng.png');
@@ -97,7 +97,9 @@ function draw() {
   fill(fg).square(1000, 530, 50, 20);
 }
 
-function mouseReleased() {
+function mousePressed() {
+  if (mouseButton == CENTER)  return initSim();
+
   if (mouseX >= 1000 && mouseX <= 1050 && mouseY >= 530 && mouseY <= 560) {
     song.isPlaying()? song.stop() : song.play();
     fg = fg == white && black || white;
@@ -113,6 +115,8 @@ function PX(x, y) {
 }
 
 function initSim() {
+  rpos = 0;
+
   u.fill(0);
   v.fill(0);
   dens.fill(0);
