@@ -7,7 +7,7 @@
  https://GitHub.com/VrtXArt/cover3
  https://VrtXArt.GitHub.io/cover3
  
- mod: @GoToLoop (2023/Jan/06) [v2.1.5]
+ mod: @GoToLoop (2023/Jan/06) [v2.1.6]
  https://GitHub.com/GoSubRoutine/Real-Time-Fluid-Dynamics
  https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics
 
@@ -22,8 +22,10 @@ const
 
   N = 128,
   M = N + 1,
+  N2 = N + 2,
   NN = (N + 4) ** 2, // 17424
   NNN = NN << 1, // 34848
+  LIM = N + .5,
 
   SOURCE = 10,
   SOURCE2 = SOURCE >> 1, // 5
@@ -31,6 +33,7 @@ const
   DIFF = 1e-4, // .0001
   VISC = 1e-4,
   DT = .01,
+  DTN = DT * N,
   RSTEP = .2,
   NOISE_AMOUNT = .03,
 
@@ -48,25 +51,26 @@ const
 
   temp = new Float32Array(2);
 
-var img, song, squareColor, black, white, fg, rpos;
+var bg, song, squareColor, off, on, fg, rpos = 0;
 
 function preload() {
-  img = loadImage `capapng.png`;
+  bg = loadImage `capapng.png`;
 }
 
 function setup() {
   createCanvas(1280, 600);
   pixelDensity(1);
 
-  describe `Fluids gradually fade away like smoke`;
+  bg.resize(width, height);
 
   song = loadSound `Data.mp3`;
 
   squareColor = color `magenta`;
-  fg = black = color(0);
-  white = color(255);
 
-  img.resize(width, height);
+  fg = off = color `black`;
+  on = color `white`;
+
+  describe `Fluids gradually fade away like smoke`;
 
   initSim();
 }
@@ -74,13 +78,13 @@ function setup() {
 function draw() {
   document.title = FPS + nf(frameRate(), 2, 1);
 
-  background(img);
+  background(bg);
 
   u_prev.set(u);
   v_prev.set(v);
   dens_prev.set(dens);
 
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     add_density();
     add_velocity();
   }
@@ -100,14 +104,21 @@ function draw() {
 function mousePressed() {
   if (mouseButton == CENTER)  return initSim();
 
-  if (mouseX >= 1000 && mouseX <= 1050 && mouseY >= 530 && mouseY <= 560) {
-    song.isPlaying()? song.stop() : song.play();
-    fg = fg == white && black || white;
-  }
+  if (
+    song.isLoaded() &&
+    mouseX >= 1000 && mouseX <= 1050 &&
+    mouseY >= 530  && mouseY <= 560
+  ) if (song.isPlaying()) {
+      song.stop();
+      fg = off;
+    } else {
+      song.loop();
+      fg = on;
+    }
 }
 
 function IX(i, j) {
-  return (N + 2) * j + i;
+  return N2 * j + i;
 }
 
 function PX(x, y) {
@@ -115,8 +126,6 @@ function PX(x, y) {
 }
 
 function initSim() {
-  rpos = 0;
-
   u.fill(0);
   v.fill(0);
   dens.fill(0);
@@ -189,7 +198,7 @@ function set_bnd(opt, arr) {
 }
 
 function diffuse(opt, a, b, diff) {
-  const d = DT * N*N * diff, d4 = 4*d + 1;
+  const d = DTN * N * diff, d4 = 4*d + 1;
 
   for (var k = 0; k < ITERS; ++k) {
     for (var j = 1; j <= N; ++j) {
@@ -212,8 +221,6 @@ function diffuse(opt, a, b, diff) {
 }
 
 function advect(opt, a, b, u0, v0) {
-  const dt0 = DT * N, lim = N + .5;
-
   for (var j = 1; j <= N; ++j) {
     const jj = IX(0, j);
 
@@ -221,8 +228,8 @@ function advect(opt, a, b, u0, v0) {
       const
         ij = jj + i,
 
-        x = constrain(i - dt0 * u0[ij], .5, lim),
-        y = constrain(j - dt0 * v0[ij], .5, lim),
+        x = constrain(i - DTN * u0[ij], .5, LIM),
+        y = constrain(j - DTN * v0[ij], .5, LIM),
 
         i0 = ~~x, i1 = i0 + 1,
         j0 = ~~y, j1 = j0 + 1,
