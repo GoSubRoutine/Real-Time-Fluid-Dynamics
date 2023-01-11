@@ -7,7 +7,7 @@
  https://GitHub.com/VrtXArt/cover3
  https://VrtXArt.GitHub.io/cover3
  
- mod: @GoToLoop (2023/Jan/06) [v2.1.7]
+ mod: @GoToLoop (2023/Jan/06) [v2.1.8]
  https://GitHub.com/GoSubRoutine/Real-Time-Fluid-Dynamics
  https://GoSubRoutine.GitHub.io/Real-Time-Fluid-Dynamics
 
